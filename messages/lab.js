@@ -19,9 +19,8 @@ function parseData() {
 		parsed = JSON.parse(request.responseText);
 		//loops through length of text
 		for (i = 0; i < parsed.length; i++) {
-			messagesPart.innerHTML += "<p>" 
-			+ converted[i]["content"] + " " 
-			+ converted[i]['username'] + "</p>";
+			messagesPart.innerHTML += "<p>" + converted[i]["content"] + " " + converted[i]['username'] + "</p>";
 		}
 	}
+	else {}
 }
