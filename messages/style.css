@@ -1,5 +1,12 @@
-/* Your CSS here... */
 #messages {
-	text-align: center;
+	text-align: left;
+	margin-left: 20%;
+	font-family: Verdana;
 	
+}
+#content {
+	font-size: 20px;
+}
+#username {
+	font-size: 14px;
 }

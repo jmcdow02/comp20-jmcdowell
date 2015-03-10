@@ -7,20 +7,18 @@ function parse() {
 	request.onreadystatechange = parseData;
 	//execute the request
 	request.send();
-	console.log("it sent");
 }
 function parseData() {
-	console.log("can you read this?");
 	//check the state
 	if (request.readyState == 4) {
 		//get the 'messages' part of the document
-		messagesPart = document.getElementById("messages");
+		messagesDiv = document.getElementById("messages");
 		//parses the text
 		parsed = JSON.parse(request.responseText);
 		//loops through length of text
 		for (i = 0; i < parsed.length; i++) {
-			messagesPart.innerHTML += "<p>" + parsed[i]["content"] + " " + parsed[i]['username'] + "</p>";
+			messagesDiv.innerHTML += "<p>" + parsed[i]["content"] 
+			+ " -- " + parsed[i]["username"] + "</p>";
 		}
 	}
-	else {}
 }
