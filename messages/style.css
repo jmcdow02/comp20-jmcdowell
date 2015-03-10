@@ -2,11 +2,12 @@
 	text-align: left;
 	margin-left: 20%;
 	font-family: Verdana;
-	
+	background-color: aqua;
+	opacity: .4;
 }
-#content {
+.content {
 	font-size: 20px;
 }
-#username {
+.username {
 	font-size: 14px;
 }
