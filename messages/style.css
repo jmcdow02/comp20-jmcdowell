@@ -1,13 +1,9 @@
 #messages {
 	text-align: left;
-	margin-left: 20%;
-	font-family: Verdana;
-	background-color: aqua;
-	opacity: .4;
-}
-.content {
-	font-size: 20px;
-}
-.username {
+	margin-left: 5%;
+	font-family: 'Trebuchet MS', Verdana;
 	font-size: 14px;
+	background-color: aqua;
+	background-size: small;
+	letter-spacing: 10px;
 }
