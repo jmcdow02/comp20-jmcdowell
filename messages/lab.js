@@ -2,7 +2,7 @@ function parse() {
 	//create instance of object
 	request = new XMLHttpRequest();
 	//create or "open" HTTP request
-	request.open("GET", "http://messagehub.herokuapp.com/messages.json", true);//true if asynchronous
+	request.open("GET", "data.json", true);//true if asynchronous
 	//set up way to manage response -- to a function
 	request.onreadystatechange = parseData;
 	//execute the request
