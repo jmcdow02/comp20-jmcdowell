@@ -1,9 +1,10 @@
 #messages {
 	text-align: left;
-	margin-left: 5%;
+	margin-left: 0.5%;
 	font-family: 'Trebuchet MS', Verdana;
 	font-size: 14px;
 	background-color: aqua;
 	background-size: small;
-	letter-spacing: 10px;
+	letter-spacing: 4px;
+	padding: 5px;
 }
