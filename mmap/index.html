@@ -1,12 +1,120 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Maurader's Map</title>
-		<script src="map.js"></script>
-		<link rel="stylesheet" href="mmap.css" type="text/css" />
+		<title>More Otter's Map</title>
+		<meta charset = "utf-8">
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+        <script src = "https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+
+        <link rel="stylesheet" href="mmapstyle.css"/>
+
+		<script type="text/javascript">
+
+var myLatitude = 0;
+var myLongitude = 0;
+var me = new google.maps.LatLng(myLatitude, myLongitude);
+var map;
+var infowindow = new google.maps.InfoWindow(); 
+
+//creates the map, initializes it, and gets my location
+function initialize() {
+	//map object
+  	var mapOptions = {
+    	zoom: 14,
+    	center: me,
+      	mapTypeId: google.maps.MapTypeId.ROADMAP
+  	};
+
+  	map = new google.maps.Map(document.getElementById('map-canvas'),
+      													mapOptions);
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(sendMyLocation);
+    }
+    else {
+    	alert("Can't access Geolocation :( ");
+    }
+}
+//gets and sends my location, and gets everyone else's locations
+function sendMyLocation(myPos) {
+	myLatitude = myPos.coords.latitude;
+	myLongitude = myPos.coords.longitude;
+	me = new google.maps.LatLng(myLatitude, myLongitude);
+	map.panTo(me);
+	var myTitle = "CameronRodriquez";
+	var myIcon = 'map_icon.png';
+
+	var marker = new google.maps.Marker({
+		position: me,
+		title: myTitle,
+		icon: myIcon
+	});
+	marker.setMap(map);
+
+	request = new XMLHttpRequest();
+	url = "https://secret-about-box.herokuapp.com/sendLocation";
+	params = "login=CameronRodriquez&lat=" + myLatitude + "&lng=" + myLongitude;
+
+	request.open("POST", url, true);
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    request.onreadystatechange = parseData;
+    request.send(params);
+
+	google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(this.title);
+        infowindow.open(map, this);
+    });
+}
+
+//converts degrees to radians
+function toRad(deg) {
+    return deg * Math.PI / 180;
+}
+//haversine formula calculates dist from me
+function distFromMe(theirLat, theirLong) {
+    var R = 6371; //Earth(km) 
+    var dLat = toRad(theirLat-myLatitude); 
+    var dLong = toRad(theirLong-myLongitude); 
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
+            Math.cos(toRad(myLatitude)) * Math.cos(toRad(theirLat)) * 
+            Math.sin(dLong/2) * Math.sin(dLong/2);  
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var dist = R * c; 
+    return .62137 * dist; //converts to miles
+}
+//parses the json, sets location, marker, and info window for every user
+function parseData() {
+    mapcanvas = document.getElementById("map-canvas"); 
+    if (request.readyState == 4 && request.status == 200) {
+    	parsed = JSON.parse(request.responseText);
+
+    	for (i = 0; i < parsed.length; i++) {
+    		var theirLatitude = parsed[i]["lat"];
+    		var theirLongitute = parsed[i]["lng"];
+
+        	var theirLoc = new google.maps.LatLng(theirLatitude, theirLongitute);
+        	var theirTitle = parsed[i]["login"];
+        	var theirDist = distFromMe(theirLatitude, theirLongitute);
+
+            var marker = new google.maps.Marker({
+                position: theirLoc,
+                title: theirTitle
+            });
+            marker.setMap(map);
+
+            google.maps.event.addListener(marker, 'click', function() {
+                infowindow.close();
+
+                var window_content = this.title + "\n. They are " + theirDist + " 										   miles away from me";
+                infowindow.setContent(window_content);
+                infowindow.open(map, this);
+            });
+    	}
+    }                    
+}
+		</script>
 	</head>
 	
 	<body onload="initialize()">
-		<div id="map-canvas" style="width: 100%; height: 100%"></div>
+		<div id="map-canvas"></div>
 	</body>
 </html>
