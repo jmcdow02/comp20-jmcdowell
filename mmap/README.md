@@ -10,7 +10,6 @@ Not correctly implemented: Distances for everyone are the same; it's
 only correct for one student. 
 Display window for my own icon has no info in it. 
 I don't know why either of these things are happening :(
-Also, my files are in the wrong repository -- I emailed Ming about this. 
 
 I collaborated with Danielle Zelin and Andrew Cavallaro.
 
