@@ -8,8 +8,7 @@ Displays info windows for everyone. It has their title and distance.
 
 Not correctly implemented: Distances for everyone are the same; it's 
 only correct for one student. 
-Display window for my own icon has no info in it. 
-I don't know why either of these things are happening :(
+I don't know why this is happening :(
 
 I collaborated with Danielle Zelin and Andrew Cavallaro.
 
