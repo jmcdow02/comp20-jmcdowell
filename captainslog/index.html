@@ -6,9 +6,19 @@
 	<title>Captain's Log</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script>
-	  // Most of your work will be done here...
+	// Most of your work will be done here...
+	$(document).ready(function(){
+		$('input#msg').change(function(){
+
+			user_msg = $("input#msg").val();
+
+			$('div#log').prepend('<p>' + date + " - " + user_msg + '</p>');
+
+			$('input#msg').val('type entry here');
+		});
+	});
+
 	  
-	  curr_date = Date.prototype.toDateString();
 
 	</script>
 </head>
