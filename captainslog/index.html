@@ -16,9 +16,9 @@
 			time = date.toLocaleTimeString();
 
 			$('div#log').prepend('<p>' + n + ' ' + time + 
-								 ' - ' + user_msg + '</p>');
-
-			//$('input#msg').val('type entry here');
+								 ' - ' + user_msg + '</p>').hide().slideDown();
+			
+			$('input#msg').val('');
 		});
 	});
 
