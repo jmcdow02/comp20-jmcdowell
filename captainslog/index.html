@@ -15,15 +15,13 @@
 			n = date.toDateString();
 			time = date.toLocaleTimeString();
 
-			$('div#log').prepend('<p>' + n + ' ' + time + 
-								 ' - ' + user_msg + '</p>').hide().slideDown();
+			log_entry = '<p>' + n + ' ' + time + ' - ' + user_msg + '</p>';
 			
+			$('div#log').prepend(log_entry).hide().slideDown();
+
 			$('input#msg').val('');
 		});
 	});
-
-	  
-
 	</script>
 </head>
 
