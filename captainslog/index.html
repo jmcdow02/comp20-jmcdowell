@@ -9,12 +9,16 @@
 	// Most of your work will be done here...
 	$(document).ready(function(){
 		$('input#msg').change(function(){
-
 			user_msg = $("input#msg").val();
 
-			$('div#log').prepend('<p>' + date + " - " + user_msg + '</p>');
+			date = new Date();
+			n = date.toDateString();
+			time = date.toLocaleTimeString();
 
-			$('input#msg').val('type entry here');
+			$('div#log').prepend('<p>' + n + ' ' + time + 
+								 ' - ' + user_msg + '</p>');
+
+			//$('input#msg').val('type entry here');
 		});
 	});
 
