@@ -8,6 +8,9 @@
 	<script>
 	// Most of your work will be done here...
 	$(document).ready(function(){
+		for (key in localStorage) {
+			$("div#log").prepend(localStorage.getItem(key));
+		}
 		$('input#msg').change(function(){
 			user_msg = $("input#msg").val();
 
@@ -16,10 +19,12 @@
 			time = date.toLocaleTimeString();
 
 			log_entry = '<p>' + n + ' ' + time + ' - ' + user_msg + '</p>';
-			
+
 			$('div#log').prepend(log_entry).hide().slideDown();
 
 			$('input#msg').val('');
+
+			localStorage.setItem(n + time + 'user_msg', log_entry);
 		});
 	});
 	</script>
