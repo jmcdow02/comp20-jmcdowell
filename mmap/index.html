@@ -51,7 +51,7 @@ function sendMyLocation(myPos) {
 	marker.setMap(map);
 
 	request = new XMLHttpRequest();
-	url = "https://secret-about-box.herokuapp.com/sendLocation";
+	url = "https://cryptic-basin-9128.herokuapp.com/sendLocation";
 	params = "login=CameronRodriquez&lat=" + myLatitude + "&lng=" + myLongitude;
 
 	request.open("POST", url, true);
