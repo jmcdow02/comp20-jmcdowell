@@ -2,19 +2,60 @@
 <html>
 <head>
 	<title>Security Report</title>
+	<meta charset="utf-8">
 </head>
 
 <body>
-	<h1>Security Assessment of Dan Callahan’s Web Application</h1>
-	<p>by James McDowell, 4/24/15</p>
+	<h1>Security Assessment of Dan Callahan's Web Application</h1>
+	<p>by James McDowell 4/24/15</p>
 
 	<h2>Introduction</h2>
-		<p>This document assesses the security of Dan Callahan’s Maurader’s Map heroku web application at <a href="http://secret-badlands-5595.herokuapp.com/">http://secret-badlands-5595.herokuapp.com/</a>. The app stores records of each user’s login name, location, and check-in time in a MongoDB database. In this report, 3 security vulnerabilities of his application are listed.</p>
+		<p>This document assesses the security of Dan Callahan’s Maurader’s Map heroku web application at <a href="http://secret-badlands-5595.herokuapp.com/">http://secret-badlands-5595.herokuapp.com/</a>. The app stores records of each users login name, location, and check-in time in a MongoDB database. In this report, 3 security vulnerabilities of his application are listed.</p>
 
 	<h2>Methodology</h2>
 		<p>At first, “black-box testing” was used to primarily assess a few issues, such as cross-site scripting, with cURL.</p>
 		<p>Next, Dan’s source code was viewed for “white-box testing”, to confirm and identify other suspected security flaws.</p>
 		
+	<h2>Abstract of Findings</h2>
+		<p>The most glaring security issue is the blatant trust of user input. This includes problems that could occur when a user submits possibly malicious content into the input field, or when data from the database is being requested.</p>	
+
+	<h2>Issues Found</h2>
+		<ol>	
+		<li>Cross-Site Scripting (XSS)</li>
+			<ul>
+			<li>Affects post /sendLocation</li>
+
+			<li>Severity: high. Attackers can submit any malicious content they want (e.g. pop-ups, redirects, malicious images, etc.)</li>
+
+			<li>Script can be injected  into the input using cURL: curl -d “login=’JAVASCRIPT’&lat=0&lng=0” http://secret-badlands-5595.herokuapp.com/</li>
+			
+			<li>html format was also used to inject malicious content: curl -d 'login="SOME IMAGE"&lat=0&lng=0' https://secret-badlands-5595.herokuapp.com/sendLocation</li>
+			
+			<li>This issue could be resolved by validating user input. Disallowing html-unsafe characters will sanitize the input for sendLocation.</li>
+			</ul>
+			<img src="screenshots/scriptAttack.png" alt="screenshot of XSS (script)" width="550" height="300">
+			<img src="screenshots/imgAttack.png" alt="screenshot of XSS (img)" width="550" height="300">
+
+		<li>Query Injection</li>
+			<ul>
+			<li>Affects get /location.json</li>
+			<li>Severity: high. Attackers can request and illicitly obtain any information they want from the database.</li>
+			<li>By accessing http://secret-badlands-5595.herokuapp.com/location.json?login[$ne]=butt, the entirety of the content of the database collection can be viewed.</li>
+			<li>This issue can also be resolved by validating user input. We can disallow queries that are not represented as strings in express (e.g. [$ne]=).</li>
+			</ul>
+			<img src="screenshots/queryInjection.png" alt="screenshot of query injection" width="900" height="500">
+		<li>No Data Verification</li>
+			<ul>
+			<li>Affects post /sendLocation</li>
+			<li>Severity: medium. Attackers are able to submit false data to the database, which ultimately corrupts the server’s information. Another vulnerability possibility is database flooding; since there is no data verification, users can run a bash script to flood the database with possibly false user input.</li>
+			<li>cURL was used again to submit false user input: curl -d 'login="FALSE INPUT"&lat=WRONG&lng=COORDINATES'</li>
+			<li>The following image shows that faulty input is easy to submit, as Batman and Bruce Wayne couldn’t possibly be in the same location.</li>
+			<li>This issue could be resolved by validating user input. Multiple records being submitted from the same source should be checked.</li>
+			</ul>
+			<img src="screenshots/unverifiedData.png" alt="screenshot of unverified data" width="900" height="500">
+		</ol>
+	<h2>Conclusion</h2>
+		<p>The current web application doesn’t hold security as a very high priority. However, the issues of cross-site scripting, query injection, and the lack of data verification can be remedied by validating user input. Disallowing html-unsafe characters and checking records from the same source will help the security for the post /sendLocation portion of the application. Also, disallowing non-string queries in the get /location.json will further benefit the security of the project.</p>	
 
 </body>
 </html>
